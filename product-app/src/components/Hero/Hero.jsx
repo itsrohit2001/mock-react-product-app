@@ -1,17 +1,17 @@
-import React from 'react';
+import React from "react";
 // Import Swiper React components
-import { Swiper, SwiperSlide } from 'swiper/react';
+import { Swiper, SwiperSlide } from "swiper/react";
 //import slide from './slide';
 
 // Import Swiper styles
-import 'swiper/css';
-import 'swiper/css/navigation';
+import "swiper/css";
+import "swiper/css/navigation";
 
 // import required modules
-import { Navigation, Pagination } from 'swiper/modules';
-import Slide from './slide';
+import { Navigation, Pagination } from "swiper/modules";
+import Slide from "./slide";
 
-  function Hero() {
+function Hero() {
   return (
     <>
       <Swiper
@@ -25,9 +25,11 @@ import Slide from './slide';
         modules={[Pagination, Navigation]}
         className="mySwiper"
       >
-        <SwiperSlide>{<Slide isFirstSlide={true}/>}</SwiperSlide>
-        <SwiperSlide>{<Slide isFirstSlide={false} name ={"This is the second slide"}/>}</SwiperSlide>
-        <SwiperSlide>{<Slide isFirstSlide={false}/>}</SwiperSlide>
+        <SwiperSlide>{<Slide isFirstSlide={true} />}</SwiperSlide>
+        <SwiperSlide>
+          {<Slide isFirstSlide={false} name={"This is the second slide"} />}
+        </SwiperSlide>
+        <SwiperSlide>{<Slide isFirstSlide={false} />}</SwiperSlide>
       </Swiper>
     </>
   );

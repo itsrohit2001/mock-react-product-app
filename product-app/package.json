@@ -2,6 +2,7 @@
   "name": "product-app",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:4500",
   "dependencies": {
     "@tailwindcss/postcss": "^4.1.7",
     "@tailwindcss/vite": "^4.1.7",
