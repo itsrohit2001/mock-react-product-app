@@ -1,27 +1,79 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { CartContext } from "../context/CartContextProvider";
 
-function Pdp({ products }) {
+function Pdp() {
   const { addToCart } = useContext(CartContext);
   const { id } = useParams();
-  const product = products.find((product) => String(product.id) === id);
-  const [qty, setQty] = useState(0);
-  const [loading, setLoading] = useState(false);
+  const [qty, setQty] = useState(1);
+  const [loading, setLoading] = useState(true);
+  const [actionLoading, setActionLoading] = useState(false);
+  const [product, setProduct] = useState(null);
 
-  if (!product) {
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(`/api/products?id=${id}`);
+        const data = await response.json();
+        if (!data) {
+          setTimeout(() => {
+            setLoading(false);
+            setProduct(null);
+            window.location.href = "/products";
+          }, 3000);
+        }
+        setProduct(data);
+        console.log("Products fetched successfully:", data);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, [id]);
+
+  const handleQtyChange = (delta) => {
+    setQty((prev) => Math.max(1, prev + delta));
+  };
+
+  const handleAddToCart = () => {
+    if (qty > 0 && product) {
+      setActionLoading(true);
+      setTimeout(() => {
+        addToCart({ ...product, quantity: qty });
+        setActionLoading(false);
+        setQty(1);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }, 1200);
+    }
+  };
+
+  if (loading) {
     return (
-      <div className="p-8 text-center animate-ping">Product do not exist</div>
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <span className="inline-block w-12 h-12 border-4 border-blue-400 border-t-transparent rounded-full animate-spin"></span>
+      </div>
     );
   }
 
-  const handleQtyChange = (delta) => {
-    setQty(Math.max(0, qty + delta));
-    //   setQty((prevQty) => Math.max(0, prevQty + delta));
-  };
+  if (!product) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="text-center">
+          <span className="inline-block w-12 h-12 border-4 border-red-400 border-t-transparent rounded-full animate-spin mb-4"></span>
+          <div className="text-xl font-semibold text-gray-600">
+            Product does not exist
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="p-8 bg-gray-50 min-h-screen">
+    <div className="p-8 bg-gray-50 flex justify-center">
       <div className="max-w-5xl mx-auto flex flex-col gap-12">
         <div
           key={product.id}
@@ -36,14 +88,16 @@ function Pdp({ products }) {
             />
             <div className="flex gap-2">
               <button
-                className="border px-4 py-1 rounded bg-gray-100"
+                className="border px-4 py-1 rounded bg-gray-100 hover:bg-gray-200 cursor-pointer"
+                disabled={qty <= 1}
                 onClick={() => handleQtyChange(-1)}
               >
                 -
               </button>
               <span className="px-4 py-1">{qty}</span>
               <button
-                className="border px-4 py-1 rounded bg-gray-100"
+                className="border px-4 py-1 rounded bg-gray-100 hover:bg-gray-200 cursor-pointer"
+                disabled={!product.inStock}
                 onClick={() => handleQtyChange(1)}
               >
                 +
@@ -105,27 +159,18 @@ function Pdp({ products }) {
             <div className="flex gap-4 mt-6">
               <button
                 className={`${
-                  loading ? "bg-orange-500" : "bg-orange-600"
-                } text-white px-6 py-2 rounded font-semibold hover:bg-orange-600 transition flex items-center justify-center gap-2`}
-                disabled={!product.inStock || loading}
-                onClick={() => {
-                  if (qty > 0) {
-                    setLoading(true);
-                    setTimeout(() => {
-                      addToCart({ ...product, quantity: qty });
-                      setLoading(false);
-                      setQty(0);
-                    }, 2000);
-                  }
-                }}
+                  actionLoading ? "bg-orange-500" : "bg-orange-600"
+                } text-white px-6 py-2 rounded font-semibold hover:bg-orange-600 transition flex items-center justify-center gap-2 cursor-pointer`}
+                disabled={!product.inStock || actionLoading}
+                onClick={handleAddToCart}
               >
-                {loading && (
+                {actionLoading && (
                   <span className="inline-block w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
                 )}
-                {loading ? "Adding..." : "Add to Cart"}
+                {actionLoading ? "Adding..." : "Add to Cart"}
               </button>
               <button
-                className="bg-yellow-400 text-gray-900 px-6 py-2 rounded font-semibold hover:bg-yellow-500 transition"
+                className="bg-yellow-400 text-gray-900 px-6 py-2 rounded font-semibold hover:bg-yellow-500 transition cursor-pointer"
                 disabled={!product.inStock}
               >
                 Buy Now

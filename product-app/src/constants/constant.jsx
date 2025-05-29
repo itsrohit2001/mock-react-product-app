@@ -29,3 +29,20 @@ export const MENU_LIST = [
 ]
 
 export const LOGIN_TEXT = "Login / Register";
+
+export const FOOTER_TEXT = {
+  TitleText: "Consulting Agency For Your Business",
+  SubTitleText: "The quick fox jumps over the lazy dog",
+  ContactText: "Contact Us",
+  CompanyText: "Made With Love By Finland All Right Reserved"
+}
+
+export const PDP_TEXT = {
+  TitleText: "Product Details",
+  SubTitleText: "The quick fox jumps over the lazy dog",
+  ContactText: "Contact Us",
+  CompanyText: "Made With Love By Finland All Right Reserved"
+}
+  
+   
+  

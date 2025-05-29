@@ -8,32 +8,34 @@ import Blog from "./pages/Blog";
 import Contact from "./pages/Contact";
 import Pages from "./pages/Pages";
 import Shop from "./pages/Shop";
-import Home from "./pages/Home";
 import Login from "./pages/Login";
 import HomePage from "./pages/HomePage";
 import { CartContextProvider } from "./context/CartContextProvider";
+import CartPage from "./pages/CartPage";
+import CheckoutPage from "./pages/CheckoutPage";
 
 function App() {
   return (
     <CartContextProvider>
       <Router>
-        <Header />
-
-        <main>
+        <main className="min-h-screen">
+          <Header />
           <Routes>
-            <Route path="/" element={<HomePage />}></Route>
+            <Route path="/" element={<HomePage />} />
             <Route path="/products/*" element={<ProductList />} />
             <Route path="/about" element={<About />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/contact" element={<Contact />} />
-            <Route path="/Home" element={<Home />} />
+            <Route path="/Home" element={<HomePage />} />
             <Route path="/Pages" element={<Pages />} />
             <Route path="/Shop" element={<Shop />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/cart" element={<CartPage />} />
+            <Route path="/checkout" element={<CheckoutPage />} />
           </Routes>
-        </main>
 
-        <Footer />
+          <Footer />
+        </main>
       </Router>
     </CartContextProvider>
   );

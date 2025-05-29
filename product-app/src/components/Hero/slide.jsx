@@ -1,19 +1,17 @@
 function Slide({isFirstSlide, name}) {
   return (
     <>
-    {isFirstSlide && <h1>This is First Slide</h1>}
-
     <div
       className="h-screen bg-cover bg-center flex flex-col justify-center items-center"
       style={{ backgroundImage: `url('/assets/background.png')` }}
     >
       <div>
-        <h1 className="text-3xl font-bold text-center">
+        <h1 className="text-3xl text-white font-bold text-center">
           {name?name:"Welcome to the Slide Component"}
         </h1>
       </div>
       <div>
-        <p className="text-center mt-4">
+        <p className="text-center text-gray-100 mt-4">
           This is a simple slide component example.
         </p>
       </div>

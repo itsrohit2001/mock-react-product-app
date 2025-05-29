@@ -62,4 +62,10 @@ console.log(res2);
 console.log(arr1);
 
 
+const arr2 = [1, 2, 3, 4, 5];
+const arr3 = arr2.reduce((accumulator, currentValue) => {
+    return accumulator + currentValue;
+}, 0);
+console.log(arr3); // Output: 15
+
 
